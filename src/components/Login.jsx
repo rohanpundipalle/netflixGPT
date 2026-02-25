@@ -15,10 +15,27 @@ const Login = () => {
   const handleFormSubmit = () => {
     const validationMessage = checkValidData(
       emailRef.current.value,
-      passwordRef.current.value
+      passwordRef.current.value,
     );
     setErrorMessage(validationMessage);
     console.log("validation", validationMessage, passwordRef);
+    if (validationMessage) return;
+
+    if (!isSignInForm) {
+      // Sign Up logic here
+      console.log(
+        "Signing Up with",
+        emailRef.current.value,
+        passwordRef.current.value,
+      );
+    } else {
+      // Sign In logic here
+      console.log(
+        "Signing In with",
+        emailRef.current.value,
+        passwordRef.current.value,
+      );
+    }
   };
 
   return (
