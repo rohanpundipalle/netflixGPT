@@ -1,11 +1,24 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import Header from "./Header";
+import { checkValidData } from "../utils/validate";
 
 const Login = () => {
   const [isSignInForm, setIsSignInForm] = useState(true);
+  const [errorMessage, setErrorMessage] = useState(null);
+  const emailRef = useRef(null);
+  const passwordRef = useRef(null);
 
   const toggleSignInForm = () => {
     setIsSignInForm(!isSignInForm);
+  };
+
+  const handleFormSubmit = () => {
+    const validationMessage = checkValidData(
+      emailRef.current.value,
+      passwordRef.current.value
+    );
+    setErrorMessage(validationMessage);
+    console.log("validation", validationMessage, passwordRef);
   };
 
   return (
@@ -19,7 +32,10 @@ const Login = () => {
         />
       </div>
       <div className="backdrop-brightness-30 absolute w-full h-full"></div>
-      <form className="p-12 absolute w-100 my-36 mx-auto right-0 left-0 text-white backdrop-brightness-40">
+      <form
+        onSubmit={(e) => e.preventDefault()}
+        className="p-12 absolute w-100 my-36 mx-auto right-0 left-0 text-white backdrop-brightness-40"
+      >
         <h1 className="font-bold text-3xl py-4">
           {isSignInForm ? "Sign In" : "Sign Up"}
         </h1>
@@ -32,15 +48,21 @@ const Login = () => {
         )}
         <input
           type="text"
+          ref={emailRef}
           placeholder="Email or mobile Number"
           className="p-4 my-3 w-full border-gray-400 border-1 rounded-sm"
         />
         <input
           type="password"
+          ref={passwordRef}
           placeholder="Password"
           className="p-4 my-3 w-full border-gray-400 border-1 rounded-sm"
         />
-        <button className="p-2 my-2 bg-red-700 w-full rounded-xs">
+        <p className="text-red-500">{errorMessage}</p>
+        <button
+          className="p-2 my-2 bg-red-700 w-full rounded-xs"
+          onClick={handleFormSubmit}
+        >
           {isSignInForm ? "Sign In" : "Sign Up"}
         </button>
         <p className="py-4 text-gray-400 font-light">
